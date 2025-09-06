@@ -55,7 +55,8 @@ header .scrolling-white-bar {
     width: 100%;
     height: 80px;
     background-color: white;
-    z-index: 0; /* unter Logo & Nav */
+    z-index: 0; 
+    transition: transform 0.3s ease-out; /* für flüssige Bewegung */
 }
 
 nav.nav-right {

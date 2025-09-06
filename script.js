@@ -11,6 +11,17 @@ const observer = new IntersectionObserver(entries => {
 
 cards.forEach(card => observer.observe(card));
 
+//Header (whiteBanner) animation
+const whiteBar = document.querySelector('.scrolling-white-bar');
+
+window.addEventListener('scroll', () => {
+    const scrollY = window.scrollY;
+
+    // Parallax: der Balken bewegt sich langsamer als der Content
+    // z.B. nur 50% des Scrollwerts
+    whiteBar.style.transform = `translateY(${-scrollY * 0.2}px)`;
+});
+
 // Header (Logo) animation
 const logo = document.querySelector('.logo img');
 const maxScroll = 300; // Scrollhöhe für Logo-Movement
