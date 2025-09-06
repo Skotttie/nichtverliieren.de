@@ -29,6 +29,7 @@ header {
 header .logo img {
     position: absolute;
     top: 15px;
+    left: 10px;
     height: 50px;
     width: auto;
     transition: all 0.5s ease;
@@ -106,6 +107,17 @@ h1 {
     position: relative;
     overflow: hidden;
     z-index: 10;
+    transform: translateZ(0);
+}
+
+#hero .slideshow-container {
+  transform: translateY(0.5%);
+}
+
+/* Grundposition */
+.slideshow-container {
+  position: relative;
+  z-index: 10;
 }
 
 /* Endlos-Container */
@@ -121,6 +133,8 @@ h1 {
     display: flex;
     width: max-content;
     animation: scroll-left 30s linear infinite;
+    animation-play-state: paused; /* pausiert bis Bilder geladen */
+    will-change: transform;       /* GPU-Beschleunigung */
 }
 
 .slideshow-track img {
@@ -128,8 +142,7 @@ h1 {
     width: auto;        /* proportional */
     height: auto;       /* proportional */
     max-height: 100vh;  /* Bild bleibt innerhalb Bildschirmhöhe */
-    display: block;
-    margin: 0 auto;
+    will-change: transform;
 }
 
 /* Endlos-Animation */
@@ -157,11 +170,12 @@ h1 {
     height: 85vh;
     max-width: 1200px;         /* maximale Breite */
     box-sizing: border-box;    /* Padding wird eingerechnet */
+    transform: translateY(0.2%);
 }
 
 .spotify-wrapper iframe {
     position: relative;
-    z-index: 1;          /* liegt über dem Bild */
+    z-index: 2;          /* liegt über dem Bild */
 }
 
 .spotify-logo {
@@ -171,13 +185,15 @@ h1 {
     width: 40%;
     height: 100%;
     object-fit: contain; /* nicht verzerren */
-    z-index: 0;
+    z-index: 1;
     opacity: 0;
     transition: all 1s ease-out; /* fließende Bewegung */
+    transform: translate3d(0,0,0); /* aktiviert GPU */
+
 }
 
 .spotify-logo.visible {
-    left: 60%;     /* Zielposition innerhalb der Box */
+    left: 56.5%;     /* Zielposition innerhalb der Box */
     opacity: 1;    /* eingeblendet */
 }
 
