@@ -1,0 +1,235 @@
+/* ========================
+   Basis-Styles
+======================== */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background: #fff;
+    color: #111;
+}
+
+/* ========================
+   Header & Navigation
+======================== */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 35px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 40px;
+    background-color: transparent; /* Header durchsichtig */
+    z-index: 1000;
+}
+
+header .logo img {
+    position: absolute;
+    top: 15px;
+    height: 50px;
+    width: auto;
+    transition: all 0.5s ease;
+    z-index: 2; /* über Balken */
+}
+
+header .header-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 80px;
+    background-color: white;
+    z-index: -1; /* Hintergrund hinter Logo & Nav */
+    transition: height 0.5s ease;
+}
+
+/* Weißer Balken */
+header .scrolling-white-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 80px;
+    background-color: white;
+    z-index: 0; /* unter Logo & Nav */
+}
+
+nav.nav-right {
+    display: flex;
+    gap: 50px;
+    position: relative;
+    z-index: 2; /* über Balken */
+    top: 20px;
+    right: 90px;
+}
+
+nav.nav-right a {
+    text-decoration: none;
+    color: #111;
+}
+
+.nav-left {
+    margin-left: 20px;
+    display: flex;
+    gap: 20px;
+    transition: all 0.5s ease;
+}
+
+nav {
+    display: flex;
+    flex-wrap: wrap;       /* verhindert Überlaufen */
+    gap: 20px;             /* Abstand zwischen Links */
+}
+
+nav a {
+    text-decoration: none;
+    color: #111;
+    white-space: nowrap;    /* verhindert Zeilenumbruch */
+}
+
+/* Überschriften */
+h1 {
+    /* font-family: 'Unifraktur'; */
+    font-weight: 500; /* optional: fetter Schriftzug */
+    font-size: 1.3rem; /* optional: Größe anpassen */
+}
+
+/* ========================
+   Banner / Hero
+======================== */
+#hero {
+    width: 100%;
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+    z-index: 10;
+}
+
+/* Endlos-Container */
+.slideshow-container.wide-image {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    height: auto;       /* Höhe passt sich Bild an */
+    max-height: 100vh;  /* max. Bildschirmhöhe */
+}
+
+.slideshow-track {
+    display: flex;
+    width: max-content;
+    animation: scroll-left 30s linear infinite;
+}
+
+.slideshow-track img {
+    flex-shrink: 0;
+    width: auto;        /* proportional */
+    height: auto;       /* proportional */
+    max-height: 100vh;  /* Bild bleibt innerhalb Bildschirmhöhe */
+    display: block;
+    margin: 0 auto;
+}
+
+/* Endlos-Animation */
+@keyframes scroll-left {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); } /* verschiebt eine Bildbreite */
+}
+
+/* Spotify-Player */
+.spotify-wrapper {
+    display: flex;
+    justify-content: left;   /* Inhalt (Player) bleibt in der Mitte */
+    align-items: center;
+    position: relative; 
+    overflow: hidden;     /* neu, damit das Bild nicht übersteht */
+
+    margin: 150px auto;         /* oben/unten Abstand + zentriert durch auto */
+    padding: 40px 40px;        /* innen Abstand, auch rechts/links */
+    
+    background-color: #1f1f1f; /* Box-Hintergrund optional: 1f1f1f oder 005687 */
+    border-radius: 15px;       /* abgerundete Ecken */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Schatten */
+    
+    width: 95%;                /* Breite der Box (z. B. 70% vom Bildschirm) */
+    height: 85vh;
+    max-width: 1200px;         /* maximale Breite */
+    box-sizing: border-box;    /* Padding wird eingerechnet */
+}
+
+.spotify-wrapper iframe {
+    position: relative;
+    z-index: 1;          /* liegt über dem Bild */
+}
+
+.spotify-logo {
+    position: absolute;
+    top: 0;
+    left: 100%;          /* Start ganz rechts außerhalb der Box */
+    width: 40%;
+    height: 100%;
+    object-fit: contain; /* nicht verzerren */
+    z-index: 0;
+    opacity: 0;
+    transition: all 1s ease-out; /* fließende Bewegung */
+}
+
+.spotify-logo.visible {
+    left: 60%;     /* Zielposition innerhalb der Box */
+    opacity: 1;    /* eingeblendet */
+}
+
+/* ========================
+   Projekte
+======================== */
+.projekt-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 50px;
+}
+
+.projekt-card {
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s;
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all 0.6s ease-out;
+}
+
+.projekt-card:hover {
+    transform: translateY(-10px);
+}
+
+.projekt-card img {
+    width: 100%;
+    height: auto;
+}
+
+.projekt-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ========================
+   Footer
+======================== */
+footer {
+    text-align: center;
+    padding: 20px;
+    background: #f8f8f8;
+}
+
+/* ========================
+   Schriftarten
+======================== */
+@font-face {
+    font-family: 'Unifraktur';
+    src: url('data/fonts/UnifrakturMaguntia-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
