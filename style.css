@@ -47,6 +47,10 @@ header .header-bg {
     transition: height 0.5s ease;
 }
 
+header .logo img.faded {
+  opacity: 0; /* nur Transparenz ändern */
+}
+
 /* Weißer Balken */
 header .scrolling-white-bar {
     position: absolute;
@@ -71,6 +75,12 @@ nav.nav-right {
 nav.nav-right a {
     text-decoration: none;
     color: #111;
+    transition: 0.8s ease;
+    display: inline-block;
+}
+
+nav.nav-right a:hover {
+transform: scale(1.1);
 }
 
 .nav-left {
@@ -88,7 +98,7 @@ nav {
 
 nav a {
     text-decoration: none;
-    color: #111;
+    color: #1f1f1f;
     white-space: nowrap;    /* verhindert Zeilenumbruch */
 }
 
@@ -152,6 +162,13 @@ h1 {
     100% { transform: translateX(-50%); } /* verschiebt eine Bildbreite */
 }
 
+.spotify-container {
+  position: relative; /* neuer Bezugspunkt für Overlay */
+  width: 95%;
+  max-width: 1200px;
+  margin: 150px auto;
+}
+
 /* Spotify-Player */
 .spotify-wrapper {
     display: flex;
@@ -179,12 +196,23 @@ h1 {
     z-index: 2;          /* liegt über dem Bild */
 }
 
+/* Bild oben links einfügen */
+.spotify-overlay {
+  position: absolute;
+  top: -5px;   /* Bild über den oberen Rand schieben */
+  left: 40px;   /* Abstand von links */
+  width: 40vh; /* frei anpassbar */
+  height: auto;
+  z-index: 0;   /* über der Box */
+  pointer-events: none; /* verhindert Klick-Blockierung */
+}
+
 .spotify-logo {
     position: absolute;
-    top: 0;
-    left: 100%;          /* Start ganz rechts außerhalb der Box */
-    width: 40%;
-    height: 100%;
+    top: -5%;
+    left: 110%;          /* Start ganz rechts außerhalb der Box */
+    width: 43%;
+    height: 110%;
     object-fit: contain; /* nicht verzerren */
     z-index: 1;
     opacity: 0;
@@ -198,9 +226,101 @@ h1 {
     opacity: 1;    /* eingeblendet */
 }
 
+/* AppleMusic-Player */
+.applemusic-container {
+  position: relative; 
+  width: 95%;
+  max-width: 1200px;
+  margin: 150px auto;
+  margin-top: -150px;
+}
+
+.applemusic-wrapper {
+    display: flex;
+    justify-content: space-between; /* Logo links, iFrame rechts */
+    align-items: center;
+    position: relative; 
+    overflow: hidden;
+    justify-content: flex-end;
+
+    margin: auto; 
+    margin-top: 290px;
+    padding: 40px 40px; 
+    background-color: #1f1f1f;
+    border-radius: 15px; 
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    width: 95%; 
+    height: 85vh;
+    max-width: 1200px; 
+    box-sizing: border-box; 
+}
+
+/* iFrame rechts */
+.applemusic-wrapper iframe {
+    position: relative;
+    margin-top: 117px;
+    margin-right: 50px;
+    transform: scale(1.2);       /* 120% größer */
+    z-index: 2;
+}
+
+/* Overlay Bild oben rechts */
+.applemusic-overlay {
+  position: absolute;
+  top: 88px;   
+  right: 40px;   /* Abstand von rechts */
+  width: 40vh; 
+  height: auto;
+  z-index: 0; 
+  pointer-events: none; 
+}
+
+/* Logo links, kommt von links */
+.applemusic-logo {
+    position: absolute;
+    top: -5%;
+    left: -50%;          /* startet links außerhalb der Box */
+    width: 43%;
+    height: 110%;
+    object-fit: contain; 
+    z-index: 1;
+    opacity: 0;
+    transition: all 1s ease-out; 
+    transform: translate3d(0,0,0); 
+}
+
+/* sichtbar wenn gescrollt */
+.applemusic-logo.visible {
+    left: 0%;      /* Zielposition innerhalb der Box */
+    opacity: 1;    
+}
+
+.fullwidth-image {
+    width: 100vw;        /* volle Bildschirmbreite */
+    height: 75px;        /* proportional */
+    display: block;
+    z-index: 0;          /* hinter Inhalt, falls nötig */
+    pointer-events: none; /* verhindert Klicks auf das Bild */
+}
+
+.fullwidth-image.top {
+    margin-bottom: 500px; /* optional: Bild leicht über Container ziehen */
+}
+
+.fullwidth-image.bottom {
+    margin-top: 300px;    /* optional: Bild leicht über Container ziehen */
+}
+
 /* ========================
    Projekte
 ======================== */
+.projekt-title {
+  margin-top: 200px;   /* Abstand nach oben */
+  margin-bottom: 40px; /* Abstand nach unten, optional */
+  margin-left: 50px;
+  text-align: left;  /* falls du es mittig haben willst */
+}
+
 .projekt-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
