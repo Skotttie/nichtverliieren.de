@@ -117,3 +117,99 @@ document.addEventListener("DOMContentLoaded", () => {
   const wrapper = document.querySelector(".applemusic-wrapper");
   observer.observe(wrapper);
 });
+
+// Connect banner parallax (robust)
+document.addEventListener('DOMContentLoaded', () => {
+  const img = document.querySelector('.connect-overlay');
+  if (!img) return;
+
+  // warte, bis Bild geladen ist, damit offsetHeight stimmt
+  function start() {
+    const maxShift = 120; // px, maximale Verschiebung (anpassen)
+    let ticking = false;
+
+    function update() {
+      const rect = img.getBoundingClientRect();
+      const imgTopDoc = rect.top + window.scrollY; // position relativ document top
+      const imgHeight = rect.height;
+      const start = imgTopDoc - window.innerHeight; // wenn Bild gerade in View kommt
+      const end = imgTopDoc + imgHeight;            // Ende Bereich
+      const scrollY = window.scrollY;
+
+      // progress 0..1 innerhalb des Bereichs
+      const progress = Math.min(Math.max((scrollY - start) / (end - start), 0), 1);
+
+      // shift: je höher progress, desto mehr verschiebung (negativ = nach oben)
+      const shift = progress * maxShift;
+
+      img.style.transform = `translate3d(-50%, ${-shift}px, 0)`;
+      // optional: fade out
+      // img.style.opacity = String(1 - progress);
+    }
+
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(() => { update(); ticking = false; });
+        ticking = true;
+      }
+    });
+
+    // initial setzen
+    update();
+    // wenn Fenstergröße sich ändert, nochmal anpassen
+    window.addEventListener('resize', () => update());
+  }
+
+  if (!img.complete) {
+    img.addEventListener('load', start);
+  } else {
+    start();
+  }
+});
+
+// email verschickt animation
+const form = document.getElementById("contact-form");
+const successBox = document.getElementById("success-animation");
+
+form.addEventListener("submit", async function(e) {
+  e.preventDefault();
+
+  const formData = new FormData(form);
+
+  try {
+    let response = await fetch(form.action, {
+      method: "POST",
+      body: formData,
+      headers: { "Accept": "application/json" }
+    });
+
+    if (response.ok) {
+      form.reset();
+
+      // Animation starten
+      successBox.style.display = "block";
+      successBox.style.opacity = "1";
+
+      const anim = lottie.loadAnimation({
+        container: successBox,
+        renderer: "svg",
+        loop: false,
+        autoplay: true,
+        path: "data/animations/sentv2.json"
+      });
+
+      // nach Ende rausfaden
+      anim.addEventListener("complete", () => {
+        successBox.style.opacity = "0";
+        setTimeout(() => {
+          successBox.style.display = "none";
+        }, 1000); // wartet bis fade-out durch ist
+      });
+
+    } else {
+      alert("sending failed :( try again");
+    }
+  } catch (err) {
+    alert("network error: " + err.message);
+  }
+});

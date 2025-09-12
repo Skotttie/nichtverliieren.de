@@ -7,6 +7,7 @@ body, html {
     font-family: 'Arial', sans-serif;
     background: #fff;
     color: #111;
+    scroll-behavior: smooth;
 }
 
 /* ========================
@@ -295,6 +296,7 @@ h1 {
     opacity: 1;    
 }
 
+/* Socials */
 .fullwidth-image {
     width: 100vw;        /* volle Bildschirmbreite */
     height: 75px;        /* proportional */
@@ -353,13 +355,176 @@ h1 {
 }
 
 /* ========================
+   Contact
+======================== */
+/* connect: fullwidth + safe layout for parallax */
+.connect-container {
+  position: relative;
+  width: 100%;
+  overflow: visible;    /* nichts abschneiden */
+  margin: 90px 0 170px 0;  /* oben 200px, unten 120px */
+  z-index: 1;
+  box-sizing: border-box;
+}
+
+/* das Bild als full-bleed banner, sauber zentriert */
+.connect-overlay {
+  position: absolute;          /* liegt über Inhalt des Containers */
+  left: 50%;
+  top: 0;
+  transform: translate3d(50%, 0, 0); /* zentriert - wir ändern Y per JS */
+  width: 100vw;                /* volle Viewport-Breite */
+  max-width: none;             /* wichtig, damit kein max-width greift */
+  height: auto;
+  display: block;
+  pointer-events: none;
+  will-change: transform, opacity;
+  z-index: 1;                  /* < header (header z-index:1000) */
+  opacity: 1;
+}
+
+#kontakt {
+  padding: 80px 20px;
+  background: #ffffff;
+  text-align: center;
+  position: relative;
+}
+
+#kontakt h2 {
+  margin-bottom: 30px;
+  font-size: 2rem;
+}
+
+#contact-form {
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: left;
+}
+/* Container */
+.floating-label {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+/* Input + Textarea */
+.floating-label input,
+.floating-label textarea {
+  width: 100%;
+  padding: 14px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+  background: none; /* wichtig, damit Label sichtbar bleibt */
+  resize: vertical; /* optional: erlaubt Nutzer die Höhe anzupassen */
+  line-height: 1.4; /* schönerer Textfluss */
+  vertical-align: top; /* sorgt dafür, dass Text oben beginnt */
+
+}
+
+/* Label im Feld */
+.floating-label label {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  transform: translateY(-50%);
+  font-size: 1rem;
+  color: #777;
+  pointer-events: none;
+  transition: all 0.2s ease;
+  background: white; /* Hintergrund, damit es lesbar bleibt */
+  padding: 0 5px;
+}
+
+/* Beim Fokus oder wenn Feld ausgefüllt ist */
+.floating-label input:focus + label,
+.floating-label input:not(:placeholder-shown) + label,
+.floating-label textarea:focus + label,
+.floating-label textarea:not(:placeholder-shown) + label {
+  top: -8px;
+  left: 8px;
+  font-size: 0.8rem;
+  color: #0096d6; /* Highlight-Farbe */
+}
+
+.send-row {
+  display: flex;
+  align-items: center; /* Button mittig neben Input ausrichten */
+  gap: 10px;           /* Abstand zwischen Feld und Button */
+}
+
+.send-row input {
+  flex: 1; /* Input nimmt die volle Breite, Button bleibt rechts */
+}
+
+.send-btn {
+  display: inline-block;
+  padding: 12px 295px;
+  background: #0096d6;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.3s, background 0.3s;
+}
+
+.send-btn:hover {
+  background: #333;
+  transform: scale(1.05);
+}
+
+#success-animation {
+  display: none;
+  position: absolute;  /* Overlay */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 250px;
+  height: 250px;
+  z-index: 9999; /* über allem */
+  opacity: 0;
+  transition: opacity 1s ease-out;
+}
+/* ========================
    Footer
 ======================== */
 footer {
-    text-align: center;
-    padding: 20px;
-    background: #f8f8f8;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr; /* 3 Spalten */
+  align-items: center;
+  padding: 20px 40px;
+  background: #f8f8f8;
+  font-size: 0.9rem;
+  color: #333;
+  position: relative;
 }
+
+.footer-left {
+  grid-column: 2;      /* mittlere Spalte */
+  text-align: center;  /* Text mittig */
+}
+
+.footer-socials {
+  grid-column: 3;     /* rechte Spalte */
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+}
+
+.footer-socials a {
+  font-size: 1.6rem;
+  color: #111;
+  transition: transform 0.3s, color 0.3s;
+}
+
+.footer-socials a:hover {
+  transform: scale(1.2);
+}
+
+.footer-socials a:nth-child(1):hover { color: #E1306C; } /* Instagram */
+.footer-socials a:nth-child(2):hover { color: #FF0000; } /* YouTube */
+.footer-socials a:nth-child(3):hover { color: #333; }    /* GitHub */
+.footer-socials a:nth-child(4):hover { color: #69C9D0; } /* TikTok */
 
 /* ========================
    Schriftarten
