@@ -1,4 +1,5 @@
 // script.js
+
 const cards = document.querySelectorAll('.projekt-card');
 
 const observer = new IntersectionObserver(entries => {
@@ -118,6 +119,56 @@ document.addEventListener("DOMContentLoaded", () => {
   observer.observe(wrapper);
 });
 
+// Project banner parallax
+document.addEventListener('DOMContentLoaded', () => {
+  const img = document.querySelector('.projekte-header');
+  if (!img) return;
+
+  function start() {
+    const maxShift = 100;
+    let ticking = false;
+
+    function update() {
+      const rect = img.getBoundingClientRect();
+      const imgTopDoc = rect.top + window.scrollY;
+      const imgHeight = rect.height;
+      const scrollY = window.scrollY;
+
+      const start = imgTopDoc - window.innerHeight;
+      const end = imgTopDoc + imgHeight;
+
+      // progress nur zwischen 0..1 begrenzen
+      let progress = (scrollY - start) / (end - start);
+      progress = Math.min(Math.max(progress, 0), 1);
+
+      const shift = progress * maxShift * 0.5;
+
+      // nur transform ändern, wenn nötig
+      img.style.transform = `translate3d(-50%, ${-shift}px, 0)`;
+    }
+
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          update();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    });
+
+    // initial setzen
+    update();
+    window.addEventListener('resize', update);
+  }
+
+  if (!img.complete) {
+    img.addEventListener('load', start);
+  } else {
+    start();
+  }
+});
+
 // Connect banner parallax (robust)
 document.addEventListener('DOMContentLoaded', () => {
   const img = document.querySelector('.connect-overlay');
@@ -213,3 +264,197 @@ form.addEventListener("submit", async function(e) {
     alert("network error: " + err.message);
   }
 });
+
+// Prüfen, ob der Nutzer schon Cookies gewählt hat
+if (!localStorage.getItem('cookiesAccepted')) {
+    document.getElementById('cookie-banner').classList.remove('hide');
+}
+
+const banner = document.getElementById('cookie-banner');
+const acceptOptional = document.getElementById('accept-optional');
+const acceptNecessary = document.getElementById('accept-necessary');
+
+acceptOptional.addEventListener('click', () => {
+    localStorage.setItem('cookiesAccepted', 'all');
+    banner.classList.add('hide');
+    enableAnalytics();
+});
+
+acceptNecessary.addEventListener('click', () => {
+    localStorage.setItem('cookiesAccepted', 'necessary');
+    banner.classList.add('hide');
+    // keine Analytics laden
+});
+
+function enableAnalytics() {
+    // GA Script nur laden, wenn Optional Cookies akzeptiert
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = 'https://www.googletagmanager.com/gtag/js?id=G-BR1BDJZ8E9';
+    document.head.appendChild(script);
+
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    window.gtag = gtag;
+    gtag('js', new Date());
+    gtag('config', 'G-BR1BDJZ8E9');
+}
+
+// Wenn der User schon Cookies akzeptiert hat
+const accepted = localStorage.getItem('cookiesAccepted');
+if (accepted === 'all') enableAnalytics();
+
+
+/* Project Carousel (self-contained) */
+(function () {
+  const carousel = document.querySelector('.project-carousel');
+  if (!carousel) return;
+
+  const track = carousel.querySelector('.pc-track');
+  const slides = Array.from(carousel.querySelectorAll('.pc-slide'));
+  const prevBtn = carousel.querySelector('.pc-prev');
+  const nextBtn = carousel.querySelector('.pc-next');
+  const indicators = carousel.querySelector('.pc-indicators');
+
+  const config = {
+    autoplay: true,
+    autoplaySpeed: 4000,
+    transitionMs: 600,
+    pauseOnHover: true
+  };
+
+  let index = 0;
+  let isAnimating = false;
+  let autoplayTimer = null;
+
+  // ========== build indicators ==========
+  slides.forEach((_, i) => {
+    const btn = document.createElement('button');
+    btn.setAttribute('aria-label', `Go to slide ${i+1}`);
+    btn.addEventListener('click', () => goTo(i));
+    indicators.appendChild(btn);
+  });
+
+  const dots = Array.from(indicators.children);
+  function updateDots() {
+    dots.forEach((d, i) => d.classList.toggle('active', i === index));
+  }
+
+  // ========== infinite loop via clones ==========
+  const firstClone = slides[0].cloneNode(true);
+  const lastClone = slides[slides.length-1].cloneNode(true);
+  track.appendChild(firstClone);
+  track.insertBefore(lastClone, track.firstChild);
+
+  // force track to start at the real first slide (index 0 => position 1)
+  const totalSlides = slides.length;
+  let trackIndex = 1;
+
+  // set initial translate
+  function setTransform(instant=false) {
+    if (instant) {
+      track.style.transition = 'none';
+    } else {
+      track.style.transition = `transform ${config.transitionMs}ms cubic-bezier(.22,.9,.37,1)`;
+    }
+    const x = -trackIndex * 100;
+    track.style.transform = `translateX(${x}%)`;
+    if (instant) requestAnimationFrame(()=> track.style.transition = `transform ${config.transitionMs}ms cubic-bezier(.22,.9,.37,1)`);
+  }
+  // initial
+  setTransform(true);
+  updateDots();
+
+  // ========== navigation ==========
+  function next() { if (isAnimating) return; isAnimating = true; trackIndex++; setTransform(); }
+  function prev() { if (isAnimating) return; isAnimating = true; trackIndex--; setTransform(); }
+
+  nextBtn.addEventListener('click', next);
+  prevBtn.addEventListener('click', prev);
+
+  // handle dot goto
+  function goTo(i) {
+    if (isAnimating) return;
+    isAnimating = true;
+    index = i;
+    trackIndex = i + 1;
+    setTransform();
+  }
+
+  // when transition ends: handle clones
+  track.addEventListener('transitionend', () => {
+    isAnimating = false;
+    if (trackIndex === 0) {
+      // moved to last clone -> snap to real last
+      trackIndex = totalSlides;
+      setTransform(true);
+      index = totalSlides - 1;
+    } else if (trackIndex === totalSlides + 1) {
+      // moved to first clone -> snap to real first
+      trackIndex = 1;
+      setTransform(true);
+      index = 0;
+    } else {
+      index = trackIndex - 1;
+    }
+    updateDots();
+  });
+
+  // ========== autoplay ==========
+  function startAutoplay() {
+    if (!config.autoplay) return;
+    stopAutoplay();
+    autoplayTimer = setInterval(() => { next(); }, config.autoplaySpeed);
+  }
+  function stopAutoplay() { if (autoplayTimer) { clearInterval(autoplayTimer); autoplayTimer = null; } }
+
+  if (config.pauseOnHover) {
+    carousel.addEventListener('mouseenter', stopAutoplay);
+    carousel.addEventListener('mouseleave', startAutoplay);
+  }
+
+  // start autoplay once images likely loaded
+  window.addEventListener('load', () => {
+    startAutoplay();
+  });
+
+  // ========== keyboard ==========
+  carousel.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') prev();
+    if (e.key === 'ArrowRight') next();
+  });
+
+  // ========== touch / drag support ==========
+  let pointerActive = false;
+  let startX = 0;
+  let currentTranslate = 0;
+
+  carousel.addEventListener('pointerdown', (e) => {
+    pointerActive = true;
+    startX = e.clientX;
+    track.style.transition = 'none';
+    stopAutoplay();
+    carousel.setPointerCapture(e.pointerId);
+  });
+  carousel.addEventListener('pointermove', (e) => {
+    if (!pointerActive) return;
+    const dx = e.clientX - startX;
+    const percent = (dx / carousel.offsetWidth) * 100;
+    track.style.transform = `translateX(${ -trackIndex * 100 + percent }%)`;
+  });
+  carousel.addEventListener('pointerup', (e) => {
+    if (!pointerActive) return;
+    pointerActive = false;
+    const dx = e.clientX - startX;
+    const threshold = carousel.offsetWidth * 0.15;
+    if (dx > threshold) { prev(); } 
+    else if (dx < -threshold) { next(); } 
+    else { setTransform(); } // revert
+    startAutoplay();
+  });
+  carousel.addEventListener('pointercancel', () => { pointerActive = false; setTransform(); startAutoplay(); });
+
+  // make dots keyboard focusable
+  dots.forEach(d => d.setAttribute('tabindex', '0'));
+
+})();

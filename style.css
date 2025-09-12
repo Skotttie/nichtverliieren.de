@@ -8,6 +8,9 @@ body, html {
     background: #fff;
     color: #111;
     scroll-behavior: smooth;
+    overscroll-behavior-y: contain; /* verhindert Über-scroll nach oben und unten */
+    overflow-x: hidden;             /* optional: horizontales Scrollen verhindern */
+    overscroll-behavior-y: contain; /* verhindert Pull-to-refresh oder overscroll-Effekt */
 }
 
 /* ========================
@@ -296,7 +299,9 @@ h1 {
     opacity: 1;    
 }
 
-/* Socials */
+/* ========================
+   Socials
+======================== */
 .fullwidth-image {
     width: 100vw;        /* volle Bildschirmbreite */
     height: 75px;        /* proportional */
@@ -310,50 +315,202 @@ h1 {
 }
 
 .fullwidth-image.bottom {
-    margin-top: 300px;    /* optional: Bild leicht über Container ziehen */
+    margin-top: 500px;    /* optional: Bild leicht über Container ziehen */
 }
 
+#social-links {
+  width: 95%;
+  max-width: 1200px;
+  margin: 100px auto;
+  text-align: center;
+}
+
+#social-links h2 {
+  margin-bottom: 40px;
+  font-size: 2rem;
+  font-weight: 500;
+}
+
+.social-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* flexible Anzahl, max 4 pro Reihe */
+  gap: 20px;
+  max-width: 1200px;
+  margin: 40px auto; /* Abstand zum Header und Projekten */
+}
+
+.social-card {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 15px 25px;
+  border-radius: 15px;
+  background-color: #1f1f1f;
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  transition: transform 0.3s, background 0.3s;
+}
+
+.social-card i {
+  margin-right: 15px;
+  font-size: 1.5rem;
+}
+
+.social-card:hover {
+  transform: scale(1.05);
+  background-color: #0096d6; 
+}
+
+/* if u dont follow banner */
+.socials-footer-image {
+  display: block;        /* Block-Level für margin auto */
+  margin: 40px auto 0;   /* oben 40px Abstand, zentriert */
+  max-width: 90%;        /* Bild passt sich an, bleibt responsive */
+  height: auto;          /* proportional skalieren */
+}
 /* ========================
    Projekte
 ======================== */
-.projekt-title {
-  margin-top: 200px;   /* Abstand nach oben */
-  margin-bottom: 40px; /* Abstand nach unten, optional */
-  margin-left: 50px;
-  text-align: left;  /* falls du es mittig haben willst */
-}
-
-.projekt-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-    padding: 50px;
-}
-
-.projekt-card {
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    transition: transform 0.3s;
-    opacity: 0;
-    transform: translateY(50px);
-    transition: all 0.6s ease-out;
-}
-
-.projekt-card:hover {
-    transform: translateY(-10px);
-}
-
-.projekt-card img {
-    width: 100%;
+.projekte-header {
+    width: 100vw;          /* volle Breite */
     height: auto;
+    margin-top: 250px;          /* proportional */
+    margin-bottom: 0px;   /* Abstand nach unten zum Grid */
+    pointer-events: none;  /* klickbar bleibt die Seite darunter */
+    z-index: 1;
+    position: relative;          /* liegt über Inhalt des Containers */
+    left: 50%;
+    transition: transform 0.5s ease-out, opacity 0.5s ease-out; /* für Parallax/Fade */
 }
 
-.projekt-card.visible {
-    opacity: 1;
-    transform: translateY(0);
+/* -----------------------------
+   Project Preview Carousel (pc-*)
+   ----------------------------- */
+.project-preview {
+  width: 95%;
+  max-width: 1200px;
+  margin: 20px auto 80px;
+  text-align: left;
 }
 
+.preview-title {
+  margin: 0 0 18px 12px;
+  font-size: 1.6rem;
+}
+
+/* Carousel Grundstruktur */
+.project-carousel {
+  position: relative;
+  overflow: visible;
+  border-radius: 12px;
+}
+
+.pc-viewport {
+  overflow: hidden;
+  width: 100%;
+  border-radius: 12px;
+}
+
+/* Track + Slides */
+.pc-track {
+  display: flex;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  transition: transform 600ms cubic-bezier(.22,.9,.37,1);
+  will-change: transform;
+}
+
+.pc-slide {
+  flex: 0 0 100%; /* eine Slide pro View */
+  box-sizing: border-box;
+  position: relative;
+}
+
+/* Bild */
+.pc-slide img {
+  display: block;
+  width: 100%;
+  height: 420px;             /* feste Höhe für konsistente Vorschau */
+  object-fit: cover;         /* wichtig: ganzes Feld füllen */
+  border-radius: 10px;
+}
+
+/* Caption (über dem Bild, unten links) */
+.pc-caption {
+  position: absolute;
+  left: 18px;
+  bottom: 18px;
+  color: white;
+  text-shadow: 0 6px 20px rgba(0,0,0,0.6);
+  z-index: 2;
+}
+
+.pc-caption h3 {
+  margin: 0 0 6px 0;
+  font-size: 1.1rem;
+}
+
+/* Prev/Next Buttons */
+.pc-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.5);
+  color: #fff;
+  border: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 10;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform .2s, background .2s;
+}
+.pc-btn:hover { transform: translateY(-50%) scale(1.06); background: rgba(0,0,0,0.7); }
+
+.pc-prev { left: 12px; }
+.pc-next { right: 12px; }
+
+/* Indicators / Dots */
+.pc-indicators {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 12px;
+}
+.pc-indicators button {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: none;
+  background: #ccc;
+  cursor: pointer;
+  transition: transform .2s, background .2s;
+}
+.pc-indicators button.active {
+  background: #0096d6;
+  transform: scale(1.2);
+}
+
+/* "See all projects" Button */
+.btn-see-all {
+  display: inline-block;
+  margin-top: 14px;
+  text-decoration: none;
+  color: #0096d6;
+  font-weight: 600;
+}
+
+/* Responsive: kleinere Slides-Höhe auf Handy */
+@media (max-width: 700px) {
+  .pc-slide img { height: 240px; }
+  .preview-title { font-size: 1.2rem; }
+}
 /* ========================
    Contact
 ======================== */
@@ -534,4 +691,68 @@ footer {
     src: url('data/fonts/UnifrakturMaguntia-Regular.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
+}
+
+/* ========================
+   Cookies
+======================== */
+.cookie-banner {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #ffffff;
+  color: white;
+  padding: 20px 30px;
+  border-radius: 12px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  z-index: 9999;
+  max-width: 600px;
+  text-align: center;
+  opacity: 1;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+#cookie-banner p {
+    color: #1f1f1f;
+}
+
+.cookie-banner.hide {
+  opacity: 0;
+  transform: translate(-50%, 100%);
+  pointer-events: none;
+}
+
+.cookie-buttons {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.cookie-buttons button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s ease;
+}
+
+.cookie-buttons button#accept-optional {
+  background-color: #0096d6;
+  color: white;
+}
+
+.cookie-buttons button#accept-necessary {
+  background-color: #333;
+  color: white;
+}
+
+.cookie-buttons button:hover {
+  transform: scale(1.05);
 }

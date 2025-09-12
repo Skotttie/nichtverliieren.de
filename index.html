@@ -17,12 +17,24 @@
     </script>
 </head>
 <body>
+    <!-- Cookies Banner -->
+    <div id="cookie-banner" class="cookie-banner">
+    <p>
+        we need some essential cookies to make this site work.
+        analytics cookies are optional but help us make things better for you &lt;33
+    </p>
+    <div class="cookie-buttons">
+        <button id="accept-optional">accept all &lt;333*</button>
+        <button id="accept-necessary">only necessary grrr</button>
+    </div>
+    </div>
+   
     <header>
         <div class="logo">
             <img src="data/photos/logo.png" alt="logo">
         </div>
         <nav class="nav-right">
-            <a href="#socials">socials &lt;33</a>
+            <a href="#social">socials &lt;33</a>
             <a href="#projekte">&lt; projects &gt;</a>
             <a href="#kontakt">connect++</a>
         </nav>
@@ -77,30 +89,106 @@
             </iframe>
             </div>
         </div>
-        
-        <section id="socials">
-        <!-- Socials Bild -->
+
+        <section id="social">
         <img src="data/photos/socialsHeaderv3.png" alt="Footer Image" class="fullwidth-image bottom">
-        
+        </section>
+
+        <section id="social-links">
+        <div class="social-grid">
+            <a href="https://instagram.com/skottie.skott" target="_blank" class="social-card">
+            <i class="fab fa-instagram"></i>
+            <span>Instagram</span>
+            </a>
+            <a href="https://www.youtube.com/channel/UCWWayAwwbdv_iLFnp7xt7Gg" target="_blank" class="social-card">
+            <i class="fab fa-youtube"></i>
+            <span>YouTube</span>
+            </a>
+            <a href="https://tiktok.com/@skotttie" target="_blank" class="social-card">
+            <i class="fab fa-tiktok"></i>
+            <span>TikTok</span>
+            </a>
+            <a href="https://github.com/Skotttie" target="_blank" class="social-card">
+            <i class="fab fa-github"></i>
+            <span>GitHub</span>
+            </a>
+            <a href="https://discord.gg/sN8SM6mF" target="_blank" class="social-card">
+            <i class="fab fa-discord"></i>
+            <span>Discord network &lt;333</span>
+            </a>
+            <a href="https://pin.it/7KQJtvckX" target="_blank" class="social-card">
+            <i class="fab fa-pinterest"></i>
+            <span>Pinterest</span>
+            </a>
+            <a href="https://open.spotify.com/playlist/0AfAmJfej7xH0RACddAD3l?si=819244064c234603" target="_blank" class="social-card">
+            <i class="fab fa-spotify"></i>
+            <span>skottie kann nicht verliieren! playlist</span>
+            </a>
+            <a href="https://open.spotify.com/playlist/5PZnykxM9C8NVQAAOptK9I?si=189b09ea41824985" target="_blank" class="social-card">
+            <i class="fab fa-spotify"></i>
+            <span>private playlist</span>
+            </a>
+            <!-- weitere Socials hier -->
+        </div>
+        <img src="data/photos/dontFollow.png" alt="Social Banner" class="socials-footer-image">
 
         </section>
 
         <section id="projekte">
-            <h2 class="projekt-title">Meine Projekte</h2>
+        
+        <img src="data/photos/projectHeader.png" alt="Projekte Header" class="fullwidth-image projekte-header">
 
-            <div class="projekt-grid">
-                <div class="projekt-card">
-                    <img src="projekt1.jpg" alt="Projekt 1">
-                    <h3>Projekt 1</h3>
-                    <a href="https://projekt1.de">Zur Projektseite</a>
+        <section id="project-preview" class="project-preview">
+            <h2 class="preview-title">Featured Projects</h2>
+
+            <div class="project-carousel" aria-roledescription="carousel" aria-label="Project preview carousel">
+                <button class="pc-btn pc-prev" aria-label="Previous slide">‹</button>
+
+                <div class="pc-viewport">
+                <ul class="pc-track">
+                    <!-- Slide 1 -->
+                    <li class="pc-slide">
+                    <a href="/projects/project1.html">
+                        <img src="data/photos/proj1.jpg" alt="Projekt 1 – Kurzbeschreibung" loading="lazy">
+                        <div class="pc-caption">
+                        <h3>Projekt 1</h3>
+                        <p>Kurzer Teaser / 1–2 Wörter</p>
+                        </div>
+                    </a>
+                    </li>
+
+                    <!-- Slide 2 -->
+                    <li class="pc-slide">
+                    <a href="/projects/project2.html">
+                        <img src="data/photos/proj2.jpg" alt="Projekt 2 – Kurzbeschreibung" loading="lazy">
+                        <div class="pc-caption">
+                        <h3>Projekt 2</h3>
+                        <p>Kurzer Teaser</p>
+                        </div>
+                    </a>
+                    </li>
+
+                    <!-- Slide 3 (optional) -->
+                    <li class="pc-slide">
+                    <a href="/projects/project3.html">
+                        <img src="data/photos/proj3.jpg" alt="Projekt 3 – Kurzbeschreibung" loading="lazy">
+                        <div class="pc-caption">
+                        <h3>Projekt 3</h3>
+                        <p>Kurzer Teaser</p>
+                        </div>
+                    </a>
+                    </li>
+                    <!-- ...weitere Slides -->
+                </ul>
                 </div>
-                <div class="projekt-card">
-                    <img src="projekt2.jpg" alt="Projekt 2">
-                    <h3>Projekt 2</h3>
-                    <a href="https://projekt2.de">Zur Projektseite</a>
-                </div>
-                <!-- weitere Projekte hier -->
+
+                <button class="pc-btn pc-next" aria-label="Next slide">›</button>
+
+                <div class="pc-indicators" role="tablist" aria-label="Slide indicators"></div>
             </div>
+
+            <a class="btn-see-all" href="/projects.html">See all projects →</a>
+        </section>
         </section>
 
         <section id="kontakt">
