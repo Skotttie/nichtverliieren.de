@@ -376,7 +376,7 @@ h1 {
     width: 100vw;          /* volle Breite */
     height: auto;
     margin-top: 250px;          /* proportional */
-    margin-bottom: 0px;   /* Abstand nach unten zum Grid */
+    margin-bottom: -20px;   /* Abstand nach unten zum Grid */
     pointer-events: none;  /* klickbar bleibt die Seite darunter */
     z-index: 1;
     position: relative;          /* liegt über Inhalt des Containers */
