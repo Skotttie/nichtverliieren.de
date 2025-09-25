@@ -285,6 +285,65 @@ function enableAnalytics() {
 const accepted = localStorage.getItem("cookiesAccepted");
 if (accepted === "all") enableAnalytics();
 
+// =============================
+// Project Carousel Steuerung
+// =============================
+document.addEventListener("DOMContentLoaded", () => {
+  const track = document.querySelector(".pc-track");
+  const slides = Array.from(document.querySelectorAll(".pc-slide"));
+  const prevBtn = document.querySelector(".pc-prev");
+  const nextBtn = document.querySelector(".pc-next");
+  const indicatorsContainer = document.querySelector(".pc-indicators");
+
+  if (!track || slides.length === 0) return;
+
+  let currentIndex = 0;
+
+  // Dots generieren, falls container existiert
+  let indicators = [];
+  if (indicatorsContainer) {
+    indicatorsContainer.innerHTML = ""; // sauber starten
+    slides.forEach((_, i) => {
+      const dot = document.createElement("button");
+      if (i === 0) dot.classList.add("active");
+      indicatorsContainer.appendChild(dot);
+      indicators.push(dot);
+
+      dot.addEventListener("click", () => {
+        currentIndex = i;
+        updateCarousel();
+      });
+    });
+  }
+
+  function updateCarousel() {
+    track.style.transform = `translateX(-${currentIndex * 100}%)`;
+
+    if (indicators.length) {
+      indicators.forEach((dot, i) => {
+        dot.classList.toggle("active", i === currentIndex);
+      });
+    }
+  }
+
+  if (prevBtn) {
+    prevBtn.addEventListener("click", () => {
+      currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+      updateCarousel();
+    });
+  }
+
+  if (nextBtn) {
+    nextBtn.addEventListener("click", () => {
+      currentIndex = (currentIndex + 1) % slides.length;
+      updateCarousel();
+    });
+  }
+
+  // Startzustand
+  updateCarousel();
+});
+
 // Navigation smooth scroll + Hash verhindern
 document.querySelectorAll("nav a").forEach((link) => {
   link.addEventListener("click", (e) => {
@@ -297,3 +356,4 @@ document.querySelectorAll("nav a").forEach((link) => {
     }
   });
 });
+

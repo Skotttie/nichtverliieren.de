@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> WSA model-viewer </title>
+  <link rel="icon" type="image/png" href="data/wsa logo v2.png">
+  <link rel="stylesheet" href="teststyle.css">
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+</head>
+<body>
+
+<a href="https://www.wsa.com/" target="_blank">
+  <img src="data\wsa modelviewer logo.png" alt="Logo" id="logo">
+</a>
+<img src="data/wsa transparent logo.png" alt="Hintergrund" id="bgImg">
+
+<div id="controls">
+  <label>Import File:
+    <input type="file" id="fileInput" accept=".glb">
+  </label>
+  <button id="resetBtn">Reset view ↺</button>
+  <button id="selectBtn">Select</button> 
+</div>
+
+<div id="sidebarContainer">
+<!-- Sidebar liegt im selben Container wie der Viewer -->
+<div id="sidebar">
+  <button id="toggleSidebar" type="button" aria-controls="sidebarContent" aria-expanded="false">
+    ⯈ Optionen
+  </button>
+
+  <div id="sidebarContent">
+    <button id="fullscreenBtn">Fullscreen ⛶</button>
+    <label class="opt">
+      Auto-Rotation 
+      <input type="checkbox" id="autoRotateToggle" checked>
+    </label>
+    <label class="opt">
+      Hintergrundfarbe:
+      <input type="color" id="bgColorPicker" value="#ffffff">
+    </label>
+  <!-- Reset Hintergrundfarbe -->
+  <button id="resetBgBtn">Standardfarbe</button>
+
+    <!-- weitere Optionen hier -->
+    <!--
+    <label class="opt">
+      Beleuchtung
+      <input type="range" min="0" max="100" value="50">
+    </label>
+    -->
+  </div>
+</div>
+</div>
+
+
+<div id="viewerContainer">
+<!--  <img src="data\vollbild icon.png" id="fullscreenImg" alt="Fullscreen" title="Fullscreen"> --> 
+<!--  <button id="fullscreenBtn">Fullscreen ⛶</button> -->
+
+  <model-viewer 
+    id="viewer" 
+    src="data\wsa circle logo.glb"
+    alt="3D Modell" 
+    camera-controls 
+    auto-rotate 
+    auto-rotate-delay="1000"
+    rotation-per-second="30deg" 
+    shadow-intensity="1">
+  </model-viewer>
+</div>
+
+<script>
+const fileInput = document.getElementById('fileInput');
+const viewer = document.querySelector("model-viewer");
+const resetBtn = document.getElementById('resetBtn');
+const fullscreenBtn = document.getElementById('fullscreenBtn'); /* auf 'fullscreenImg' ändern wenn Img aktiviert werden soll */
+const toggleSidebar = document.getElementById('toggleSidebar');
+const sidebar = document.getElementById('sidebar');
+const autoRotateToggle = document.getElementById("autoRotateToggle");
+const toggleSidebarBtn = document.getElementById('toggleSidebar');
+const bgColorPicker = document.getElementById("bgColorPicker");
+const resetBgBtn = document.getElementById("resetBgBtn");
+
+
+// Variablen für die Startwerte
+let startOrbit, startTarget, startFieldOfView;
+
+// Wenn irgendein Modell geladen wird (egal ob Standard oder Upload)
+viewer.addEventListener('load', () => {
+  startOrbit = viewer.cameraOrbit;
+  startTarget = viewer.cameraTarget;
+  startFieldOfView = viewer.fieldOfView;
+  console.log("Startwerte gespeichert:", startOrbit, startTarget, startFieldOfView);
+});
+
+// Upload von neuen Dateien
+fileInput.addEventListener('change', (event) => {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const url = URL.createObjectURL(file);
+  viewer.src = url;
+  viewer.autoRotate = true;
+
+  viewer.addEventListener('load', () => {
+    URL.revokeObjectURL(url);
+  }, { once: true });
+});
+
+// Select-Button - weiterleitung
+document.getElementById("selectBtn").addEventListener("click", function() {
+  const file = fileInput.files[0];
+    if (!file) {
+      alert("Bitte wähle zuerst eine .glb Datei aus!");
+      return;
+    }
+  const objectURL = URL.createObjectURL(file);
+  localStorage.setItem("uploadedGLB", objectURL);
+  window.location.href = "arPlatform.html";
+});
+
+// Reset-Kamera
+resetBtn.addEventListener('click', () => {
+  if (startOrbit && startTarget && startFieldOfView) {
+    viewer.cameraOrbit = startOrbit;
+    viewer.cameraTarget = startTarget;
+    viewer.fieldOfView = startFieldOfView;
+    viewer.jumpCameraToGoal();
+    console.log("Reset ausgeführt");
+  } else {
+    console.log("Noch keine Startwerte gespeichert!");
+  }
+});
+
+// VollbildButton
+fullscreenBtn.addEventListener('click', () => {
+  if (!document.fullscreenElement) {
+    viewer.requestFullscreen();
+  } else {
+    document.exitFullscreen();
+  }
+})
+/*
+// Sidebar
+ toggleSidebar.addEventListener('click', () => {
+  sidebar.classList.toggle('open');
+  toggleSidebar.textContent = sidebar.classList.contains('open') 
+    ? "⯆ Options" 
+    : "⯈ Options";
+}); */
+
+// Sidebar ein/aus + Button-Label
+toggleSidebarBtn.addEventListener('click', () => {
+  const isOpen = sidebar.classList.toggle('open');
+  toggleSidebarBtn.textContent = isOpen ? '⯆ Optionen' : '⯈ Optionen';
+  toggleSidebarBtn.setAttribute('aria-expanded', String(isOpen));
+});
+
+// Auto-Rotation steuern
+autoRotateToggle.addEventListener("change", () => {
+  if (autoRotateToggle.checked) {
+    viewer.setAttribute("auto-rotate", "");
+  } else {
+    viewer.removeAttribute("auto-rotate");
+  }
+});
+// Standardfarbe merken
+const defaultViewerBg = "#e0e0e0";
+
+// Hintergrundfarbe ändern
+bgColorPicker.addEventListener("input", () => {
+  viewer.style.background = bgColorPicker.value;
+});
+
+// Reset auf Standardfarbe
+resetBgBtn.addEventListener("click", () => {
+  viewer.style.background = defaultViewerBg;
+  bgColorPicker.value = defaultViewerBg;
+});
+</script>
+
+</body>
+</html>

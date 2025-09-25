@@ -452,6 +452,12 @@ h1 {
   font-size: 1.1rem;
 }
 
+.pc-caption h4 {
+  margin: 0 0 6px 0;
+  font-size: 1.1rem;
+  color: #1f1f1f;
+}
+
 /* Prev/Next Buttons */
 .pc-btn {
   position: absolute;
@@ -464,7 +470,7 @@ h1 {
   height: 44px;
   border-radius: 50%;
   cursor: pointer;
-  z-index: 10;
+  z-index: 9999;
   font-size: 20px;
   display: flex;
   align-items: center;

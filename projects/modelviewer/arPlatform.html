@@ -1,0 +1,117 @@
+<!-- ar.html -->
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>MindAR Face: AR</title>
+
+  <!-- A-Frame -->
+  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+
+  <!-- MindAR face (CDN; Version wie in den Docs) -->
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-face-aframe.prod.js"></script>
+
+  <style>
+    body,html { margin:0; height:100%; }
+    a-scene { width:100%; height:100vh; }
+    #badge {
+      position: fixed; left: 8px; bottom: 8px; z-index:9999;
+      background: rgba(0,0,0,0.5); color:#fff; padding:6px 10px; border-radius:6px;
+      font-family: system-ui; font-size:13px;
+    }
+  </style>
+</head>
+<body>
+  <div id="badge">Lade Modell…</div>
+
+  <!-- MindAR A-Frame Szene (Face) -->
+  <a-scene mindar-face embedded
+           color-space="sRGB"
+           renderer="colorManagement: true, physicallyCorrectLights: true"
+           vr-mode-ui="enabled: false"
+           device-orientation-permission-ui="enabled: false">
+
+    <!-- Assets: das GLB wird hier dynamisch gesetzt -->
+    <a-assets>
+      <a-asset-item id="userModel" src=""></a-asset-item>
+    </a-assets>
+
+    <!-- Kamera (MindAR steuert die Tracking-Kamera) -->
+    <a-camera active="false" position="0 0 0"></a-camera>
+
+    <!-- Anchor: anchorIndex steuert, an welchen Landmark angeheftet wird.
+         1 = Nasenspitze (häufig), experimentiere mit anderen Indizes -->
+    <a-entity mindar-face-target="anchorIndex: 1">
+      <!-- Dein Modell, skaliere / offsette falls nötig -->
+    <a-entity mindar-face-target="anchorIndex: 1">
+      <a-entity id="modelEntity" gltf-model="#userModel"
+            scale="0.02 0.02 0.02"
+            position="0 0 0"
+            rotation="0 0 0">
+      </a-entity>
+    </a-entity>
+    </a-entity>
+
+  </a-scene>
+
+<script>
+(async ()=>{
+  try{
+    // Datei aus SessionStorage
+    const dataUrl = sessionStorage.getItem('glbDataUrl');
+    const fileName = sessionStorage.getItem('glbFileName') || 'Modell';
+
+    if (!dataUrl) {
+      alert('Keine GLB in sessionStorage gefunden. Bitte zuerst upload.html nutzen.');
+      document.getElementById('badge').textContent = 'Keine Datei gefunden';
+      return;
+    }
+
+    // DataURL -> Blob -> ObjectURL (sauberer Weg, statt direkt DataURL an a-asset)
+    const blob = await (await fetch(dataUrl)).blob();
+    const objectURL = URL.createObjectURL(blob);
+
+    // Setze src des a-asset-item (A-Frame lädt das Modell dann automatisch)
+    window.addEventListener('DOMContentLoaded', () => {
+      const assetEl = document.querySelector('#userModel');
+      assetEl.setAttribute('src', objectURL);
+      console.log('Asset Element:', assetEl);
+      console.log('Src aktuell:', assetEl.getAttribute('src'));
+
+    const modelEl = document.querySelector('#modelEntity');
+      modelEl.addEventListener('model-loaded', () => console.log('Modell geladen!'));
+    });
+
+    document.getElementById('badge').textContent = `Geladen: ${fileName}`;
+
+    // Feeds für Debugging
+    const modelEl = document.querySelector('#modelEntity');
+    modelEl.addEventListener('model-loaded', ()=> {
+      console.log('Modell geladen', modelEl.object3D);
+      // Hier kannst du scale/position feinjustieren:
+      // modelEl.setAttribute('scale','0.015 0.015 0.015');
+    });
+
+    // Optional: Wenn du die Anchor-Nummer ändern willst, UI hinzufügen
+    // Beispiel: taste drücken 1..10 und see where it attaches
+    window.addEventListener('keydown', (e) => {
+      const model = document.querySelector('#modelEntity');
+      switch(e.key) {
+      case 'ArrowUp': model.object3D.position.y += 0.005; break;
+      case 'ArrowDown': model.object3D.position.y -= 0.005; break;
+      case 'ArrowLeft': model.object3D.position.x -= 0.005; break;
+      case 'ArrowRight': model.object3D.position.x += 0.005; break;
+      case '+': model.object3D.scale.multiplyScalar(1.05); break;
+     case '-': model.object3D.scale.multiplyScalar(0.95); break;
+    }
+});  
+
+  }catch(err){
+    console.error('Fehler beim Laden des Modells in AR:', err);
+    alert('Fehler beim Laden des Modells. Siehe Konsole.');
+  }
+})();
+</script>
+</body>
+</html>

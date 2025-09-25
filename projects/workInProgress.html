@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>oh..</title>
+  <style>
+    /* Grundlayout */
+    body, html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #ffffff;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    /* Zurück-Button links oben */
+    .back-button {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      padding: 10px 20px;
+      background-color: #0096d6;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: bold;
+      transition: background 0.3s, transform 0.2s;
+    }
+
+    .back-button:hover {
+      background-color: #007bb5;
+      transform: scale(1.05);
+    }
+
+    /* Mittiger Text */
+    .center-text {
+      max-width: 80%;
+      color: #111;
+      font-size: 2rem;
+    }
+
+    @media (max-width: 600px) {
+      .center-text {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Button zurück zur Hauptseite -->
+  <a href="/index.html" class="back-button">&larr; backk 2 main</a>
+
+  <!-- Mittiger Text -->
+  <div class="center-text">
+    work in progress...
+  </div>
+
+</body>
+</html>

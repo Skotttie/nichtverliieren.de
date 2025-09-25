@@ -1,0 +1,274 @@
+/* Grundlegendes Styling */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #ffffff;
+  color: #333;
+}
+
+/* Steuerung oben */
+#controls {
+  padding: 1.5vh 2vw;
+  margin-top: 5vh;
+  background: #ffffff;
+  border-radius: 1vw;
+  box-shadow: 0 0.4vh 0.8vh rgba(0,0,0,0.1);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2vw;
+  align-items: center;
+}
+
+#viewerContainer {
+  position: relative; 
+  display: inline-block;
+}
+
+/* Sidebar */
+#sidebarContainer{
+  display: flex;
+  align-items: flex-start;
+  padding: 2vh;
+}
+#sidebar {
+  position: absolute;
+  top: 5vh;
+  left: 2vw;
+  width: 18.5vw;               /* Sidebar relativ zur Breite */
+  max-width: 400px;
+  max-height: 4vh;
+  background: #ffffff;
+  border-radius: 1vw;
+  box-shadow: 0 0.4vh 1vh rgba(0,0,0,0.2);
+  padding: 1vh;
+  z-index: 20;
+  transition: transform 0.3s ease;
+  transform: translateX(-12vw);
+}
+#sidebar.open {
+  transform: translateX(0);
+  max-height: 60vh;
+}
+#toggleSidebar{
+  width: 100%;
+  padding: 0.7vh 1vw;
+  border: none;
+  background: #ffffff;
+  color: #333;
+  font-family: "myFonts", Lexender-Regular;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 0.5vw;
+  margin-bottom: 1vh;
+  text-align: right;
+  transition: all 0.3s ease;
+}
+#sidebar.open #toggleSidebar{
+  text-align: center;
+  padding: 1vh;
+}
+#sidebar.open #sidebarContent {
+  max-height: 60vh;
+}
+#sidebar.open #sidebarContent .opt {
+  max-height: 10vh; /* oder etwas Großes wie 100vh */
+}
+#sidebarContent {
+  max-height: 0;
+  overflow: hidden;
+  flex-direction: column;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6vw;   /* abstand zwischen den sidebar objekten */
+  font-weight: 500;    /* text dicke bestimmen */
+  transition: max-height 0.4s ease;
+  will-change: max-height;
+}
+#sidebarContent .opt input[type="checkbox"] {
+  width: 18px;             /* Größe der Checkbox */
+  height: 18px;
+  cursor: pointer;
+  margin: 0;               /* Standard-Margin entfernen */
+}
+#toggleRotation {
+  margin-right: 8px;
+  accent-color: #8300ff; /* lila Checkbox */
+}
+/* Kleiner Helfer: Checkbox-Farbe passend */
+#sidebarContent input[type="checkbox"] { accent-color: #8300ff; }
+#bgColorPicker {
+  width: 40px;
+  height: 24px;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+#resetBgBtn {
+  margin-top: 1vh;
+  padding: 0.5vh 1vw;
+  border-radius: 0.5vw;
+  border: 1px solid #8300ff;
+  background: #8300ff;
+  color: white;
+  cursor: pointer;
+}
+#fullscreenBtn {
+  margin-top: 1vh;
+  padding: 0.5vh 1vw;
+  border-radius: 0.5vw;
+  border: 1px solid #8300ff;
+  background: #8300ff;
+  color: white;
+  cursor: pointer;  
+}
+
+#infoSlot {
+  position: fixed;
+  bottom: 11vh;             /* Abstand vom unteren Rand relativ zur Höhe */
+  right: 2vw;              /* Abstand vom rechten Rand relativ zur Breite */
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 1vw;      /* Rundung relativ zur Breite */
+  padding: 2vh 2vw;        /* Dynamisches Padding */
+  width: 20vw;             /* Breite relativ zum Viewport */
+  max-width: 300px;        /* nicht größer als 300px */
+  min-width: 200px;        /* nicht kleiner als 200px */
+  max-height: 40vh;         /* begrenzt auf 40% der Bildschirmhöhe */
+  overflow-y: auto;         /* macht die Box scrollbar */
+  box-shadow: 0 0.6vh 1.2vh rgba(0,0,0,0.2);
+  font-family: "myFonts", Lexender-Regular;
+  font-size: 1rem;         /* skaliert mit Root-Textgröße */
+  z-index: 10;
+}
+
+#infoSlot h3 {
+  margin: 0 0 1vh 0;
+  font-size: 1rem;       /* passt sich ebenfalls an */
+}
+/* Name des Modells */
+#modelName {
+  color: #494949;
+  font-size: 1.1rem;
+  font-family: "myFonts", Lexender-Regular;
+}
+/* Preis */
+#modelPrice {
+  color: #797878;
+  font-size: 1.4rem;
+  font-family: "myFonts", Lexender-Regular;
+}
+/* Beschreibung */
+#modelDesc {
+  color: #797878;
+  font-size: 0.9rem;
+  font-family: "myFonts", Lexender-Regular;
+}
+
+
+/* Logo */
+#logo {
+  position: fixed;
+  top: 5vh;
+  right: 2vw;
+  width: 20vw;         /* Skaliert proportional */
+  max-width: 250px;    /* aber nicht zu groß */
+  height: auto;
+  z-index: 1000;
+}
+
+label {
+  font-size: 0.9rem;
+  font-family: "myFonts", Lexender-Regular;
+  font-weight: 550;
+}
+
+input[type="file"], button {
+  padding: 0.6vh 1vw;
+  border-radius: 0.5vw;
+  border: 1px solid #8300ff;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-family: "myFonts", Lexender-Regular;
+}
+
+/* Buttons */
+#selectBtn {
+  font-family: "myFonts", Lexender-Regular;
+  font-size: 0.9rem;
+  padding: 1vh 2vw;
+  border-radius: 50px;
+  background: #8300ff;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 0.4vh 1vh rgba(0,0,0,0.3);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+/*
+#fullscreenBtn {
+  position: absolute;
+  border: none;
+  left: -9vw;
+  bottom: 3vh;
+  background: #8300ff;
+  color: #ffffff;
+  box-shadow: 0 0.4vh 1vh rgba(0,0,0,0.3);
+  border-radius: 0.5vw;
+  padding: 1vh 2vw;
+  cursor: pointer;
+  font-family: "myFonts", Lexender-Regular;
+}
+
+#fullscreenBtn:hover {
+  background: #555;
+}
+*/
+/* 3D Viewer Styling */
+model-viewer {
+  width: 80vw;
+  max-width: 1000px;
+  height: 70vh;
+  background: #e0e0e0;
+  margin: 3vh 0;
+  border-radius: 1vw;
+  box-shadow: 0 0.6vh 1.5vh rgba(0,0,0,0.15);
+}
+
+#bgImg {
+  position: fixed;   /* fixiert im Fenster */
+  bottom: 0;         /* unten */
+  left: 0;           /* links */
+  width: 150px;      /* Größe */
+  height: auto;
+  z-index: -1;       /* hinter allen anderen Elementen */
+  pointer-events: none; /* klickbar durchlässig */
+  opacity: 1;      /* optional */
+}
+
+/* Für kleine Bildschirme */
+@media (max-width: 600px) {
+  model-viewer {
+    width: 95vw;
+    height: 60vh;
+  }
+  #logo {
+    width: 35vw;
+  }
+  #sidebar {
+    width: 70vw;
+    transform: translateX(-60vw);
+  }
+}
+
+@font-face {
+  font-family: "myFonts";
+  src: url("data/fonts/Lexend-Regular.ttf") format(truetype), url("data/fonts/Lexend-Bold.ttf") format(truetype);
+  font-weight: normal;
+  font-style: normal;
+}
+

@@ -1,0 +1,261 @@
+/* ========================
+   Header
+   ======================== */
+/* Navigation oben rechts */
+.projects-header {
+  position: fixed;      /* bleibt oben wie Header */
+  top: 0;
+  right: 0;
+  width: auto;          /* nicht 100% nehmen */
+  padding: 15px 40px;   /* Abstand vom rechten Rand */
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  background: transparent;
+  z-index: 1000;
+}
+
+.nav-right {
+  margin-left: auto; /* schiebt die Links komplett nach rechts */
+  display: flex;
+  gap: 15px;
+}
+
+.nav-right a {
+  text-decoration: none;
+  color: white;
+  font-weight: 500;
+  font-size: 0.95rem; /* etwas kompakter */
+  transition: color 0.3s ease;
+  top: 20px;
+  right: 0px;
+}
+
+.nav-right a:hover {
+  color: #0096d6;
+}
+
+/* Container für das Hero-Bild */
+.projects-hero {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 100px;  /* Platz unter der Navi */
+  margin-bottom: 20px; /* optional: Abstand nach unten */
+  height: auto;       /* Höhe wird durch Bild bestimmt */
+  text-align: center;
+}
+
+/* Hero-Bild selbst */
+.projects-hero-img {
+  max-width: 250px;   /* maximale Breite */
+  width: 40%;         /* passt sich an Bildschirmgröße an */
+  height: auto;       /* Proportionen bleiben */
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+  transition: opacity 0.3s ease;
+}
+
+/* Projekt-Boxen */
+.projects-list {
+  max-width: 1000px;
+  margin: 60px auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.project-card {
+  display: flex;
+  align-items: center;
+  border: 2px solid #eee;
+  border-radius: 12px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  transition: transform 0.3s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-5px);
+}
+
+.project-image img {
+  width: 200px;
+  height: auto;
+  border-radius: 8px;
+}
+
+.project-info {
+  margin-left: 20px;
+}
+
+.project-info h2 {
+  margin-bottom: 10px;
+  font-size: 1.5rem;
+}
+
+.btn {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 8px 16px;
+  border-radius: 6px;
+  background: #ff5c5c;
+  color: white;
+  text-decoration: none;
+  transition: background 0.3s ease;
+}
+
+.btn:hover {
+  background: #e14a4a;
+}
+
+/* ========================
+   Projekte Overview Styles
+   ======================== */
+
+/* Container für die gesamte Projektliste */
+.projects-container {
+  width: 95%;
+  max-width: 1200px;
+  margin: 60px auto; /* Abstand nach Header */
+  display: flex;
+  flex-direction: column;
+  gap: 40px; /* Abstand zwischen Projekten */
+}
+
+/* Einzelnes Projekt (Box) */
+/* Projekt-Box klickbar */
+.project-box {
+  display: flex;
+  align-items: center;
+  background-color: #1f1f1f;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease;
+  text-decoration: none; /* kein Unterstrich */
+  color: inherit;
+}
+
+.project-box:hover {
+  transform: scale(1.02);
+}
+
+/* Bild links */
+.project-image {
+  flex: 0 0 220px;
+  height: 220px;
+  position: relative;
+  overflow: hidden;
+}
+
+.project-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.project-box:hover .project-image img {
+  transform: scale(1.1);
+}
+
+/* Info rechts */
+.project-info {
+  flex: 1;
+  padding: 30px;
+  color: #fff;
+  position: relative;
+  opacity: 0;
+  transform: translateX(-30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.project-box:hover .project-info {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Titel immer leicht sichtbar */
+.project-info h3 {
+  margin: 0 0 12px;
+  font-size: 1.5rem;
+  color: rgba(0,150,214,0.6); /* leicht transparent */
+  transition: color 0.3s ease;
+}
+
+.project-box:hover .project-info h3 {
+  color: #0096d6; /* leuchtet voll auf */
+}
+
+/* Text erst beim Hover sichtbar */
+.project-info p {
+  margin: 0;
+  line-height: 1.4;
+  font-size: 1rem;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.project-box:hover .project-info p {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Zurück-Button oben links */
+.back-home {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  padding: 8px 14px;
+  background: #0096d6;
+  color: #fff;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 0.9rem;
+  z-index: 1100;
+  transition: background 0.3s ease;
+}
+
+.back-home:hover {
+  background: #007bb0;
+}
+
+.projects-summary {
+  text-align: center;
+  margin: 20px auto 0px auto; /* Abstand oben/unten */
+  max-width: 800px;            /* nicht zu breit */
+  color: #fff;
+}
+
+.projects-summary h2 {
+  font-size: 2rem;
+  margin-bottom: 1px;
+  color: #0096d6; /* gleiche Akzentfarbe wie in den Boxen */
+}
+
+.projects-summary p {
+  font-size: 1.1rem;
+  line-height: 1.5;
+  opacity: 0.85; /* etwas dezenter */
+  color: #1f1f1f;
+}
+
+/* Responsive Anpassung */
+@media (max-width: 768px) {
+  .project-box {
+    flex-direction: column;
+  }
+
+  .project-image {
+    width: 100%;
+    height: 200px;
+  }
+
+  .project-info {
+    opacity: 1; /* auf Mobile direkt sichtbar */
+    transform: none;
+  }
+}
